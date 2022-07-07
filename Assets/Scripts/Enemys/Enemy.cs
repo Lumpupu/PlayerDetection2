@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageble
+public class Enemy : MonoBehaviour
 {
     enum Mode : int { view = 0, attack }
     /*
@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour, IDamageble
     [SerializeField] private int  HealthAmount;
     [Header("Searchable player")]
     [SerializeField] private Player PlayerRef;
+    [Header("Weapon")]
+    [SerializeField] private Weapon Weapon;
     [Space(5), Header("Layers for Raycasting")]
     [SerializeField] private LayerMask TargetLayer;
     [SerializeField] private LayerMask BarrierLayer;
@@ -32,16 +34,11 @@ public class Enemy : MonoBehaviour, IDamageble
     private Vector3 _positionPlayer, _directionToPlayer;
     private float _distanceToPlayer;
 
-    public void GetDamage(int damage)
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void Start()
     {
         StartCoroutine(SearchCoroutine());
     }
-    #region [SearchCoroutine and raycasting]
+    #region [SearchCoroutine and CheckInArea]
     private IEnumerator SearchCoroutine()
     {
         while (true)
@@ -50,12 +47,22 @@ public class Enemy : MonoBehaviour, IDamageble
             CheckInArea();
             if (_playerDetected)
             {
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(2); // wait for identificate
                 CheckInArea();
-                if (_playerDetected) PlayerRef.Detected();
+                if (_playerDetected)
+                    StartCoroutine(Shoot());
                 else Debug.Log("Maybe rats..."); // lost target from viwe
             }
+            else StopCoroutine(Shoot());
+        }
+    }
 
+    private IEnumerator Shoot()
+    {
+        while(_playerDetected)
+        {
+            Weapon.Shoot(PlayerRef.transform.position);
+            yield return new WaitForSeconds(Weapon.FireRateSeconds);
         }
     }
 
