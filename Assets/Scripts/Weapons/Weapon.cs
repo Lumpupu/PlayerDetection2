@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+[Flags] public enum FiringStatus { firing = 0, reload = 1 << 0, jammed = 1 << 1 }
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected int Ammo;
     [SerializeField] protected int AmmoCapacity;
-    [SerializeField] protected int Damage;
-    [SerializeField] public int FireRateSeconds;
-    [SerializeField] protected int ReloadTime;
+    [SerializeField] public int Damage;
+    [SerializeField] public float FireRateSeconds;
+    [SerializeField] public float ReloadTime;
     [SerializeField] protected float Spread;
+    [SerializeField] protected float JammingChance;
+    [Space(5)]
     [SerializeField] protected GameObject Bullet;
     [SerializeField] protected Transform WeaponPlace;
-    [SerializeField] protected LayerMask TargetLayer;
 
     protected Rigidbody _rigidbodyBullet;
     protected Rigidbody _bulletInstance;
     protected Vector3 WeaponPosition;
+    protected float _random;
 
-    public abstract void Shoot(Vector3 target);
+    public abstract FiringStatus Shoot(Vector3 target);
     public abstract void Reload();
 
     protected virtual void Start()

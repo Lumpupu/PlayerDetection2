@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    enum Mode : int { view = 0, attack }
+    enum EnemyMode : int { view = 0, attack }
     /*
     Умер - попал/не попал в триггер игрока
     возможно Движение
@@ -14,9 +14,8 @@ public class Enemy : MonoBehaviour
     когда игрок стреляет - enemy начинает стрелять в ответ
     */
     [SerializeField] private int  HealthAmount;
-    [Header("Searchable player")]
+    [Header("Searchable player")] 
     [SerializeField] private Player PlayerRef;
-    [Header("Weapon")]
     [SerializeField] private Weapon Weapon;
     [Space(5), Header("Layers for Raycasting")]
     [SerializeField] private LayerMask TargetLayer;
@@ -25,9 +24,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float Radius = 5F;
     [Range(0, 360), SerializeField] private float Angle = 90F;
     [Space(5), Header("Area scan period")]
-    [SerializeField] private float Delay = 0.2F;
+    [SerializeField] private float CheckInAreaDelay = 0.2F;
 
     private bool _playerDetected;
+    private EnemyMode _enemyMode;
 
     private Vector3 _position;
     private RaycastHit _hit;
@@ -36,34 +36,55 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        _enemyMode = EnemyMode.view;
         StartCoroutine(SearchCoroutine());
     }
+
     #region [SearchCoroutine and CheckInArea]
     private IEnumerator SearchCoroutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Delay);
+            yield return new WaitForSeconds(CheckInAreaDelay);
             CheckInArea();
-            if (_playerDetected)
+
+            if (_playerDetected && _enemyMode != EnemyMode.attack)
             {
                 yield return new WaitForSeconds(2); // wait for identificate
                 CheckInArea();
                 if (_playerDetected)
-                    StartCoroutine(Shoot());
-                else Debug.Log("Maybe rats..."); // lost target from viwe
+                {
+                    _enemyMode = EnemyMode.attack;
+                    Debug.Log("Enemy: attack target");
+                    StartCoroutine(ShootCoroutine());
+                }
+                else Debug.Log("Enemy: Maybe rats..."); // lost target from viwe
             }
-            else StopCoroutine(Shoot());
         }
     }
 
-    private IEnumerator Shoot()
+    private IEnumerator ShootCoroutine()
     {
-        while(_playerDetected)
+        while (_playerDetected)
         {
-            Weapon.Shoot(PlayerRef.transform.position);
+            switch (Weapon.Shoot(PlayerRef.transform.position))
+            {
+                case FiringStatus.reload:
+                    {
+                        yield return new WaitForSeconds(Weapon.ReloadTime);
+                        Weapon.Reload();
+                        break;
+                    }
+                case FiringStatus.jammed:
+                    {
+                        yield return new WaitForSeconds(2);
+                        break;
+                    }
+            }
             yield return new WaitForSeconds(Weapon.FireRateSeconds);
         }
+        _enemyMode = EnemyMode.view;
+        StopCoroutine(ShootCoroutine());
     }
 
     private void CheckInArea()

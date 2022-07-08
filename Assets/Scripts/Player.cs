@@ -9,12 +9,12 @@ public class Player : MonoBehaviour, IHealth, IDamageble
 
     public void Detected()
     {
-        Debug.Log($"{Name}: detected!!!");
+        Debug.Log($"Player: {Name} detected!!!");
     }
 
     public void Die()
     {
-        Debug.Log($"Player die");
+        Debug.Log($"Player: die");
         Destroy(this.gameObject);
     }
 
