@@ -41,7 +41,6 @@ public class Pistol : Weapon
     {
         Ammo = 10;
         AmmoCapacity = 10;
-        Damage = 10;
         ReloadTime = 2;
         FireRateSeconds = 30/60; // 30 per minute -> second
     }
