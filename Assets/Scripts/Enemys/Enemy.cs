@@ -2,39 +2,41 @@
 using UnityEngine;
 public class Enemy : MonoBehaviour
 {
-    private enum EnemyMode : int { view = 0, attack }
+    protected enum EnemyMode : int { view = 0, attack }
 
-    [SerializeField] private int  HealthAmount;
+    [SerializeField] protected int HealthAmount;
     [Header("Searchable player")] 
-    [SerializeField] private Player PlayerRef;
-    [SerializeField] private Weapon Weapon;
+    [SerializeField] protected Player PlayerRef;
+    [SerializeField] protected Weapon Weapon;
     [Space(5), Header("Layers for Raycasting")]
-    [SerializeField] private LayerMask TargetLayer;
-    [SerializeField] private LayerMask BarrierLayer;
+    [SerializeField] protected LayerMask TargetLayer;
+    [SerializeField] protected LayerMask BarrierLayer;
     [Space(5), Header("Observation area")]
-    [SerializeField] private float Radius = 5F;
-    [Range(0, 360), SerializeField] private float Angle = 90F;
+    [SerializeField] protected float Radius = 5F;
+    [Range(0, 360), SerializeField] protected float Angle = 90F;
     [Space(5), Header("Area scan period")]
-    [SerializeField] private float CheckInAreaDelay = 0.2F;
+    [SerializeField] protected float CheckInAreaDelay = 0.2F;
 
-    private bool _playerDetected;
-    private EnemyMode _enemyMode;
+    protected bool _playerDetected;
+    protected EnemyMode _enemyMode;
 
-    private Vector3 _position;
-    private RaycastHit _hit;
-    private Vector3 _positionPlayer, _directionToPlayer;
-    private float _distanceToPlayer;
+    protected Vector3 _position;
+    protected RaycastHit _hit;
+    protected Vector3 _positionPlayer, _directionToPlayer;
+    protected float _distanceToPlayer;
 
-    private string _weaponName; // debug
+    protected string _weaponName; // debug
+    protected string _enemyName; // debug
 
     private void Start()
     {
         _weaponName = Weapon.name;
+        _enemyName = this.name;
         _enemyMode = EnemyMode.view;
         StartCoroutine(SearchCoroutine());
     }
 
-    #region [SearchCoroutine() and CheckInArea() and ShootCoroutine()]
+    #region [SearchCoroutine() and ShootCoroutine()]
     private IEnumerator SearchCoroutine()
     {
         while (true)
@@ -49,10 +51,10 @@ public class Enemy : MonoBehaviour
                 if (_playerDetected)
                 {
                     _enemyMode = EnemyMode.attack;
-                    Debug.Log("Enemy: set mode to attack, START ShootCoroutine");
+                    Debug.Log($"Enemy({_enemyName}): set mode to attack, START ShootCoroutine");
                     StartCoroutine(ShootCoroutine());
                 }
-                else Debug.Log("Enemy: lost target"); // lost target from view
+                else Debug.Log($"Enemy({_enemyName}): lost target"); // lost target from view
             }
         }
     }
@@ -67,26 +69,27 @@ public class Enemy : MonoBehaviour
                     {
                         yield return new WaitForSeconds(Weapon.ReloadTime);
                         Weapon.Reload();
-                        Debug.Log($"Enemy.{_weaponName}: reload");
+                        Debug.Log($"Enemy({_weaponName}): reload");
                         break;
                     }
                 case FiringStatus.jammed:
                     {
-                        Debug.Log($"Enemy.{_weaponName}: jammed");
+                        Debug.Log($"Enemy({_weaponName}): jammed");
                         yield return new WaitForSeconds(2);
                         break;
                     }
                 case FiringStatus.firing:
-                    Debug.Log($"Enemy.{_weaponName}: firing");
+                    Debug.Log($"Enemy({_weaponName}): firing");
                     break;
 
             }
             yield return new WaitForSeconds(Weapon.FireRateSeconds);
         }
-        Debug.Log("Enemy: set mode to view, STOP ShootCoroutine");
+        Debug.Log($"Enemy({_enemyName}): set mode to view, STOP ShootCoroutine");
         _enemyMode = EnemyMode.view;
         StopCoroutine(ShootCoroutine());
     }
+    #endregion
 
     private void CheckInArea()
     {
@@ -109,9 +112,8 @@ public class Enemy : MonoBehaviour
         }
         else _playerDetected = false;
     }
-    #endregion
 
-    #region[Debug gizmo]
+    #region[Debug gizmos]
     private void OnDrawGizmos()
     {
         _position = transform.position;

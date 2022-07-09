@@ -24,12 +24,12 @@ public class Player : MonoBehaviour, IDamageble
 
     public void Detected()
     {
-        Debug.Log($"Player: {Name} detected");
+        Debug.Log($"Player({Name}): detected");
     }
 
     public void Die()
     {
-        Debug.Log($"Player: {Name} die");
+        Debug.Log($"Player({Name}): die");
         _renderer.material = DieMaterial;
         //Destroy(this.gameObject);
     }
@@ -37,16 +37,16 @@ public class Player : MonoBehaviour, IDamageble
     public void GetDamage(int damage)
     {
         Health -= damage;
-        Debug.Log($"Player: get {damage} damage, health = {_health}");
+        Debug.Log($"Player({Name}): get {damage} damage, health = {_health}");
     }
 
     private void Update()
     {
         if(Input.GetKey(KeyCode.W))
-            transform.position += Vector3.forward * MoveSpeed;
+            transform.Translate(Vector3.forward * MoveSpeed * Time.deltaTime);
         
         if(Input.GetKey(KeyCode.S)) 
-            transform.position += Vector3.back * MoveSpeed;
+            transform.Translate(-Vector3.forward * MoveSpeed * Time.deltaTime);
 
         if(Input.GetKey(KeyCode.A)) 
             transform.Rotate(Vector3.up * -TurnSpeed * Time.deltaTime);

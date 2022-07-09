@@ -444,9 +444,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecfed8d7a7234874d98f21d326e3d291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 1
-  TurnSpeed: 1
-  MoveSpeed: 1
+  Name: Standart
+  TurnSpeed: 100
+  MoveSpeed: 25
   HealthAmount: 100
   DieMaterial: {fileID: 2100000, guid: 41a3fddeab217fb5587c4cc76581fe70, type: 2}
 --- !u!1 &539643293
@@ -1030,7 +1030,7 @@ GameObject:
   - component: {fileID: 1508136763}
   - component: {fileID: 1508136762}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
