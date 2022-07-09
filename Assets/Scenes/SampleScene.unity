@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44658822, g: 0.49642307, b: 0.5748253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,8 +133,8 @@ GameObject:
   - component: {fileID: 50856784}
   - component: {fileID: 50856783}
   - component: {fileID: 50856782}
-  - component: {fileID: 50856785}
   - component: {fileID: 50856781}
+  - component: {fileID: 50856785}
   m_Layer: 0
   m_Name: PistolBullet
   m_TagString: Untagged
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915fb6433240f398ebb129baa419d429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Firearm: {fileID: 539643295}
+  Damage: 20
 --- !u!1 &68235628
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +380,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91389273}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -445,7 +445,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: 1
+  TurnSpeed: 1
+  MoveSpeed: 1
   HealthAmount: 100
+  DieMaterial: {fileID: 2100000, guid: 41a3fddeab217fb5587c4cc76581fe70, type: 2}
 --- !u!1 &539643293
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,11 +495,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ammo: 10
   AmmoCapacity: 10
-  Damage: 10
   FireRateSeconds: 0.5
   ReloadTime: 2
   Spread: 0
-  JammingChance: 0
+  JammingChance: 5
   Bullet: {fileID: 50856779}
   WeaponPlace: {fileID: 539643294}
 --- !u!1 &705507993
@@ -699,7 +701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &951421848
 Transform:
   m_ObjectHideFlags: 0
@@ -905,6 +907,8 @@ GameObject:
   - component: {fileID: 1426818259}
   - component: {fileID: 1426818258}
   - component: {fileID: 1426818257}
+  - component: {fileID: 1426818261}
+  - component: {fileID: 1426818260}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -938,7 +942,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 30
+  m_CookingOptions: 0
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1426818258
 MeshRenderer:
@@ -987,6 +991,31 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426818255}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1426818260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426818255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e440ace4429cc9af8f76d50b3cee5b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1426818261
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426818255}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 5, z: 10}
+  m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!1 &1508136760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fde3db192d96db4b9f1eb29e77bb43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthAmount: 0
+  HealthAmount: 10
   PlayerRef: {fileID: 91389278}
   Weapon: {fileID: 539643295}
   TargetLayer:

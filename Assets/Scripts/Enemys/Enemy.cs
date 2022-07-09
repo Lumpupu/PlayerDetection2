@@ -1,18 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
-
 public class Enemy : MonoBehaviour
 {
-    enum EnemyMode : int { view = 0, attack }
-    /*
-    Умер - попал/не попал в триггер игрока
-    возможно Движение
-    Стрельба
-    + Угол обзора
-    +/- Какое препятствие
+    private enum EnemyMode : int { view = 0, attack }
 
-    когда игрок стреляет - enemy начинает стрелять в ответ
-    */
     [SerializeField] private int  HealthAmount;
     [Header("Searchable player")] 
     [SerializeField] private Player PlayerRef;
@@ -34,13 +25,16 @@ public class Enemy : MonoBehaviour
     private Vector3 _positionPlayer, _directionToPlayer;
     private float _distanceToPlayer;
 
+    private string _weaponName; // debug
+
     private void Start()
     {
+        _weaponName = Weapon.name;
         _enemyMode = EnemyMode.view;
         StartCoroutine(SearchCoroutine());
     }
 
-    #region [SearchCoroutine and CheckInArea]
+    #region [SearchCoroutine() and CheckInArea() and ShootCoroutine()]
     private IEnumerator SearchCoroutine()
     {
         while (true)
@@ -55,10 +49,10 @@ public class Enemy : MonoBehaviour
                 if (_playerDetected)
                 {
                     _enemyMode = EnemyMode.attack;
-                    Debug.Log("Enemy: attack target");
+                    Debug.Log("Enemy: set mode to attack, START ShootCoroutine");
                     StartCoroutine(ShootCoroutine());
                 }
-                else Debug.Log("Enemy: Maybe rats..."); // lost target from viwe
+                else Debug.Log("Enemy: lost target"); // lost target from view
             }
         }
     }
@@ -73,16 +67,23 @@ public class Enemy : MonoBehaviour
                     {
                         yield return new WaitForSeconds(Weapon.ReloadTime);
                         Weapon.Reload();
+                        Debug.Log($"Enemy.{_weaponName}: reload");
                         break;
                     }
                 case FiringStatus.jammed:
                     {
+                        Debug.Log($"Enemy.{_weaponName}: jammed");
                         yield return new WaitForSeconds(2);
                         break;
                     }
+                case FiringStatus.firing:
+                    Debug.Log($"Enemy.{_weaponName}: firing");
+                    break;
+
             }
             yield return new WaitForSeconds(Weapon.FireRateSeconds);
         }
+        Debug.Log("Enemy: set mode to view, STOP ShootCoroutine");
         _enemyMode = EnemyMode.view;
         StopCoroutine(ShootCoroutine());
     }
@@ -110,6 +111,7 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
+    #region[Debug gizmo]
     private void OnDrawGizmos()
     {
         _position = transform.position;
@@ -129,4 +131,5 @@ public class Enemy : MonoBehaviour
         angleInDegrees += eulerY;
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
+    #endregion
 }

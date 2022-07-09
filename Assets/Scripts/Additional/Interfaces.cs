@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
-interface IHealth
-{
-    int Health();
-    void Die();
-}
-
 interface IDamageble
 {
+    int Health{get;}
     void GetDamage(int damage);
 }
 
-interface IMovaeble
+interface IMoveable
 {
     void Move();
 }
