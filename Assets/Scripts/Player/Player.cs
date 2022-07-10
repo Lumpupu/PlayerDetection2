@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+public enum PlayerStatus { life = 0, dead }
 public class Player : MonoBehaviour, IDamageble
 {
     [SerializeField] private string Name;
@@ -11,24 +9,24 @@ public class Player : MonoBehaviour, IDamageble
     [SerializeField] private Material DieMaterial;
 
     private Renderer _renderer;
+    private PlayerStatus _status;
     private int _health;
+
     public int Health 
     { 
         get => _health;
         private set
         {
-            if(value > 0) _health -= value;
-            else Die();
+            if(value > 0) _health = value;
+            else if (_status == PlayerStatus.life) Die();
         }
     }
 
-    public void Detected()
-    {
-        Debug.Log($"Player({Name}): detected");
-    }
+    public PlayerStatus GetStatus() => _status;
 
     public void Die()
     {
+        _status = PlayerStatus.dead;
         Debug.Log($"Player({Name}): die");
         _renderer.material = DieMaterial;
         //Destroy(this.gameObject);
@@ -37,7 +35,7 @@ public class Player : MonoBehaviour, IDamageble
     public void GetDamage(int damage)
     {
         Health -= damage;
-        Debug.Log($"Player({Name}): get {damage} damage, health = {_health}");
+        // Debug.Log($"Player({Name}): get {damage} damage, health = {Health}");
     }
 
     private void Update()

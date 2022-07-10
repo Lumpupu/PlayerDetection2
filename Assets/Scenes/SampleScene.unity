@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 539643294}
   - component: {fileID: 539643295}
   m_Layer: 0
-  m_Name: Pistol WeaponPlace
+  m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1030,7 +1030,7 @@ GameObject:
   - component: {fileID: 1508136763}
   - component: {fileID: 1508136762}
   m_Layer: 0
-  m_Name: Enemy Debug
+  m_Name: MachineGunner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1060,10 +1060,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1508136760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fde3db192d96db4b9f1eb29e77bb43b, type: 3}
+  m_Script: {fileID: 11500000, guid: d9a35124a4d3448ebaebc7054ccff60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthAmount: 10
+  HealthAmount: 150
   PlayerRef: {fileID: 91389278}
   Weapon: {fileID: 539643295}
   TargetLayer:
@@ -1072,9 +1072,10 @@ MonoBehaviour:
   BarrierLayer:
     serializedVersion: 2
     m_Bits: 512
-  Radius: 5
+  Radius: 10
   Angle: 90
   CheckInAreaDelay: 0.2
+  DebugGozmo: 1
 --- !u!65 &1508136763
 BoxCollider:
   m_ObjectHideFlags: 0
