@@ -12,5 +12,6 @@ public class FirearmsBullet : MonoBehaviour
             _entity.GetDamage(Damage);
             Destroy(this.gameObject);
         }
+        Destroy(this.gameObject, 5f);
     }
 }
