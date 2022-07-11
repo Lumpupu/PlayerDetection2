@@ -2,6 +2,6 @@
 [RequireComponent(typeof(Collider))]
 public class AreaDestroyer : MonoBehaviour
 {
-    private void OnTriggerExit(Collider other) =>
+    private void OnCollisionExit(Collision other) =>
         Destroy(other.gameObject);
 }

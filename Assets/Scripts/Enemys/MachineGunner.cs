@@ -49,7 +49,7 @@ public class MachineGunner : Enemy
                         break;
                     }
                 case FiringStatus.firing:
-                    Debug.Log($"Enemy({_weaponName}): firing");
+                    //Debug.Log($"Enemy({_weaponName}): firing");
                     break;
             }
             yield return new WaitForSeconds(Weapon.FireRateSeconds);

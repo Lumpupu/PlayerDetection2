@@ -7,6 +7,7 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected int AmmoCapacity;
     [SerializeField] public float FireRateSeconds;
     [SerializeField] public float ReloadTime;
+    [Range(-5, 5)]
     [SerializeField] protected float Spread;
     [Range(0, 100)]
     [SerializeField] protected float JammingChance;
