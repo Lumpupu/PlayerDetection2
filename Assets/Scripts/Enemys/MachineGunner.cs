@@ -33,7 +33,7 @@ public class MachineGunner : Enemy
     {
         while (_playerDetected)
         {
-            switch (Weapon.Shoot(PlayerRef.transform.position))
+            switch (Weapon.TryShoot(PlayerRef.transform.position))
             {
                 case FiringStatus.reload:
                     {

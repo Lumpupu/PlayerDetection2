@@ -20,7 +20,7 @@ public abstract class Weapon : MonoBehaviour
     protected Vector3 WeaponPosition;
     protected float _random;
 
-    public abstract FiringStatus Shoot(Vector3 target);
+    public abstract FiringStatus TryShoot(Vector3 target);
     public abstract void Reload();
 
     protected virtual void Start()
@@ -35,6 +35,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnValidate()
     {
-        if (Ammo > AmmoCapacity) Debug.Log("Weapon: Ammo > AmmoCapacity");
+        if (Ammo > AmmoCapacity)
+            Debug.Log("Weapon: Ammo > AmmoCapacity");
     }
 }

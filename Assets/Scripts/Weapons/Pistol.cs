@@ -4,7 +4,7 @@ using UnityEngine;
 using System = UnityEngine.Random;
 public class Pistol : Weapon
 {
-    public override FiringStatus Shoot(Vector3 target)
+    public override FiringStatus TryShoot(Vector3 target)
     {
         if (Ammo >= 0)
         {
